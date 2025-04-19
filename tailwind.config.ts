@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				mono: ["Menlo", "Monaco", "Consolas", "monospace"]
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +64,23 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Animation tool custom colors
+				canvas: {
+					bg: "#FFFFFF",
+					grid: "#F0F0F0",
+				},
+				editor: {
+					bg: "#1A1F2C",
+					panel: "#221F26",
+					border: "#403E43",
+					highlight: "#FEF7CD",
+					text: "#C8C8C9"
+				},
+				tool: {
+					active: "#F2FCE2",
+					hover: "#F1F0FB",
+					default: "#8E9196"
 				}
 			},
 			borderRadius: {
