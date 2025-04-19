@@ -1,73 +1,93 @@
-# Welcome to your Lovable project
+working drawing code :
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>InkSpire</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+    }
+    canvas {
+      display: block;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
 
-## Project info
+  <script src="https://cdn.jsdelivr.net/npm/roughjs@4.5.1/bundled/rough.min.js"></script>
+    <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const roughCanvas = rough.canvas(canvas);
 
-**URL**: https://lovable.dev/projects/54ecc4e5-297f-443b-86eb-85a6d1e13afc
+    let drawing = false;
+    let lastX = 0, lastY = 0;
+    let lastTime = 0;
+    let mouseSpeed = 0;
 
-## How can I edit this code?
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-There are several ways of editing your application.
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-**Use Lovable**
+    canvas.addEventListener('mousedown', (e) => {
+        drawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+        lastTime = performance.now();
+        drawDot(lastX, lastY);
+    });
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/54ecc4e5-297f-443b-86eb-85a6d1e13afc) and start prompting.
+    canvas.addEventListener('mousemove', (e) => {
+        if (!drawing) return;
 
-Changes made via Lovable will be committed automatically to this repo.
+        const now = performance.now();
+        const newX = e.offsetX;
+        const newY = e.offsetY;
 
-**Use your preferred IDE**
+        const dx = newX - lastX;
+        const dy = newY - lastY;
+        const dist = Math.hypot(dx, dy);
+        const dt = now - lastTime || 1; 
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+        mouseSpeed = dist / dt; 
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+        const step = 1;
+        for (let i = 0; i < dist; i += step) {
+        const x = lastX + (dx * i) / dist;
+        const y = lastY + (dy * i) / dist;
+        drawDot(x, y);
+        }
 
-Follow these steps:
+        lastX = newX;
+        lastY = newY;
+        lastTime = now;
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+        // console.log('Speed:', mouseSpeed.toFixed(2), 'px/ms');
+    });
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseleave', () => drawing = false);
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+    function drawDot(x, y) {
+        roughCanvas.circle(x, y, 2.5, {
+        stroke: 'black',
+        strokeWidth: 1.2 * mouseSpeed.toFixed(2),
+        fill: 'black',
+        fillStyle: 'solid'
+        });
+    }
+    </script>
+</body>
+</html>
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/54ecc4e5-297f-443b-86eb-85a6d1e13afc) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
