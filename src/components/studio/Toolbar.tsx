@@ -11,7 +11,15 @@ import {
   Layers,
   Play,
   FileDown,
-  FileUp
+  FileUp,
+  Move,
+  Type,
+  Image,
+  Scissors,
+  Wand2,
+  Hand,
+  ZoomIn,
+  LineChart,
 } from "lucide-react";
 
 interface ToolbarProps {
@@ -37,15 +45,23 @@ export const Toolbar = ({
 }: ToolbarProps) => {
   const tools = [
     { id: "select", icon: MousePointer, tooltip: "Select (V)" },
+    { id: "move", icon: Move, tooltip: "Move (M)" },
+    { id: "hand", icon: Hand, tooltip: "Pan (H)" },
     { id: "pencil", icon: Pencil, tooltip: "Pencil (P)" },
     { id: "eraser", icon: Eraser, tooltip: "Eraser (E)" },
     { id: "rectangle", icon: Square, tooltip: "Rectangle (R)" },
-    { id: "circle", icon: Circle, tooltip: "Circle (C)" }
+    { id: "circle", icon: Circle, tooltip: "Circle (C)" },
+    { id: "line", icon: LineChart, tooltip: "Line (L)" },
+    { id: "type", icon: Type, tooltip: "Text (T)" },
+    { id: "image", icon: Image, tooltip: "Image (I)" },
+    { id: "magic", icon: Wand2, tooltip: "Magic Wand (W)" },
+    { id: "scissors", icon: Scissors, tooltip: "Cut (X)" },
+    { id: "zoom", icon: ZoomIn, tooltip: "Zoom (Z)" },
   ] as const;
 
   return (
     <div className="flex flex-col bg-editor-panel p-2 rounded-md border border-editor-border">
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="grid grid-cols-2 gap-1 mb-4">
         {tools.map((tool) => (
           <Button
             key={tool.id}
@@ -56,7 +72,7 @@ export const Toolbar = ({
                 ? "bg-tool-active text-editor-bg"
                 : "text-tool-default hover:bg-tool-hover hover:text-editor-bg"
             }`}
-            onClick={() => onToolChange(tool.id)}
+            onClick={() => onToolChange(tool.id as any)}
             title={tool.tooltip}
           >
             <tool.icon className="w-4 h-4" />
@@ -66,7 +82,7 @@ export const Toolbar = ({
       
       <div className="h-px bg-editor-border my-2" />
       
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <Button
           variant="ghost"
           size="icon"
@@ -100,7 +116,7 @@ export const Toolbar = ({
       
       <div className="h-px bg-editor-border my-2" />
       
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <Button
           variant="ghost"
           size="icon"
